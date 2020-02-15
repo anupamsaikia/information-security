@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *caesarCipher(char *plainText, int key, int size)
+char *caesarEncrypt(char *plainText, int key, int size)
 {
     char *cipherText = (char *)malloc(sizeof(char) * size);
 
@@ -28,6 +28,14 @@ char *caesarCipher(char *plainText, int key, int size)
     return cipherText;
 }
 
+char *caesarDecrypt(char *cipherText, int key, int size)
+{
+    key = key % 26; // to make key value between [0-25]
+    key = 26 - key;
+
+    return caesarEncrypt(cipherText, key, size);
+}
+
 int main(int argc, char const *argv[])
 {
     char *str = "Sample Text?";
@@ -35,7 +43,8 @@ int main(int argc, char const *argv[])
     int key = 10;
 
     printf("Text: %s\n", str);
-    printf("Cipher: %s\n", caesarCipher(str, key, len));
+    printf("Encrypted: %s\n", caesarEncrypt(str, key, len));
+    printf("Decrypted: %s\n", caesarDecrypt(caesarEncrypt(str, key, len), key, len));
 
     return 0;
 }
